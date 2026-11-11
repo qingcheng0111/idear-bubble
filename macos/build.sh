@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Mac 端构建：编译 Swift 外壳（Apple 芯片 + Intel 通用版），
-# 组装 macos/build/idear泡泡.app（内含三端共用的网页核心），并打包成 .dmg 安装镜像
+# 组装 macos/build/idear泡泡.app（内含各端共用的网页核心），并打包成 .dmg 安装镜像
 set -euo pipefail
 cd "$(dirname "$0")"
 

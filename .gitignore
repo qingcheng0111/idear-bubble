@@ -24,3 +24,7 @@ android/local.properties
 # macOS 构建产物
 macos/.build/
 macos/build/
+
+# Windows 构建产物（网页在构建时复制进 assets/）
+windows/assets/
+windows/build/

@@ -2,7 +2,7 @@ import AppKit
 import UniformTypeIdentifiers
 import WebKit
 
-/// 加载应用包里的 index.html（三端共用的网页核心），
+/// 加载应用包里的 index.html（各端共用的网页核心），
 /// 并补上网页在 WKWebView 里缺少的原生能力：提示与确认框、打开文件、保存文件。
 @MainActor
 final class WebController: NSObject, WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler {

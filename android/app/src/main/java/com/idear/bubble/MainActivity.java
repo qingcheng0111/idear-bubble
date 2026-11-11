@@ -32,7 +32,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 /**
- * 加载三端共用的网页核心（assets/index.html），
+ * 加载各端共用的网页核心（assets/index.html），
  * 并补上网页在 WebView 里缺少的原生能力：保存文件、选择文件、提示与确认框。
  */
 public class MainActivity extends Activity {

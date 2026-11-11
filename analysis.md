@@ -33,7 +33,7 @@
 
 - 地址栏显示 `file:///Users/…/Desktop/MyBubbleBrain.html`（帧 56、76、196、256）→ **单个 HTML 文件，直接双击用浏览器打开，不需要服务器**。
 - 右下角写着「✓ 已保存在此浏览器」（帧 56、196、256）→ 数据保存在浏览器本地（`localStorage`）。
-- 结论：沿用视频里的形态，用**原生 HTML + CSS + JavaScript 单文件**实现，零依赖、无需安装任何东西。文件名起初沿用视频里的 `MyBubbleBrain.html`，后按用户要求改为 `web/idear泡泡.html`。Android 端和 Mac 端是加载这份网页的原生外壳，三端功能一致。
+- 结论：沿用视频里的形态，用**原生 HTML + CSS + JavaScript 单文件**实现，零依赖、无需安装任何东西。文件名起初沿用视频里的 `MyBubbleBrain.html`，后按用户要求改为 `web/idear泡泡.html`。Android、Mac 和 Windows 端是加载这份网页的原生外壳，各端功能一致。
 
 ### 命名
 

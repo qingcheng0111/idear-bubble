@@ -12,7 +12,11 @@
 |---|---|---|
 | Android 7.0 及以上 | `idear-bubble-1.0-android.apk` | 在手机上打开 APK，按提示允许「安装未知来源应用」 |
 | macOS 13 及以上（Apple 芯片 / Intel） | `idear-bubble-1.0-macos.dmg` | 打开 dmg，把「idear泡泡」拖进「应用程序」 |
+| Windows 10 / 11（x64） | `idear-bubble-1.0-windows-x64.exe` | 下载后双击运行，免安装 |
+| Windows 11（ARM64 芯片） | `idear-bubble-1.0-windows-arm64.exe` | 下载后双击运行，免安装 |
 | 浏览器 | `idear-bubble-1.0-web.html` | 下载后双击，用浏览器打开 |
+
+Windows 版没有代码签名，第一次运行时 SmartScreen 可能提示「Windows 已保护你的电脑」，点「更多信息 → 仍要运行」即可。Windows 10 需要已安装「Microsoft Edge WebView2 运行时」（大多数电脑已随 Edge 自带，Windows 11 一定自带）。
 
 Mac 版没有经过 Apple 公证，第一次打开会被系统拦下。先双击打开一次，然后到「系统设置 → 隐私与安全性」，点「仍要打开」。也可以在终端执行：
 
@@ -45,11 +49,14 @@ xattr -dr com.apple.quarantine '/Applications/idear泡泡.app'
 │   ├── Sources/IdearBubble/
 │   ├── Info.plist
 │   └── build.sh         # 编译通用版，组装 idear泡泡.app 并打包 .dmg
+├── windows/             # Windows 端：Go 程序，WebView2 外壳
+│   ├── main.go
+│   └── build.sh         # 交叉编译 x64 / ARM64 两个单文件 exe
 ├── analysis.md          # 需求视频的逐帧分析
 └── README.md
 ```
 
-三端共用同一份网页核心 `web/idear泡泡.html`：改功能只改这一个文件，再按下面的命令重新构建各端即可。Android 和 Mac 外壳只负责加载它，并补上网页在内嵌浏览器里缺少的原生能力。
+各端共用同一份网页核心 `web/idear泡泡.html`：改功能只改这一个文件，再按下面的命令重新构建各端即可。Android、Mac 和 Windows 外壳只负责加载它，并补上网页在内嵌浏览器里缺少的原生能力。
 
 下面的命令都在仓库根目录执行。
 
@@ -136,3 +143,17 @@ open 'macos/build/idear泡泡.app'
 ```
 
 数据保存在 `~/Library/WebKit/com.idear.bubble/`。要分发给其他电脑，需要换成自己的 Apple 开发者证书签名并公证。
+
+## Windows 端
+
+一个 Go 编写的窗口程序，用 Windows 自带的 WebView2（Edge 内核）加载 `web/idear泡泡.html`。网页在构建时直接嵌进 exe，所以只有一个文件、免安装。导出备份、从备份恢复、提示与确认框都使用 WebView2 自带的下载、文件选择和对话框。
+
+需要：Go 1.27.2 或更高版本，可以在 macOS、Linux 或 Windows 上构建。首次构建会自动下载 `github.com/jchv/go-webview2` 和 `golang.org/x/sys`，需要联网。
+
+**构建**（输出 `windows/build/idear-bubble-1.0-windows-x64.exe` 和 `windows/build/idear-bubble-1.0-windows-arm64.exe`）：
+
+```bash
+./windows/build.sh
+```
+
+**运行**：把 exe 拷到 Windows 10 / 11 上双击。网页文件和数据保存在 `%LOCALAPPDATA%\idear-bubble\`。

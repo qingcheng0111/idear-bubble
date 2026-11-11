@@ -23,6 +23,8 @@
 ├── web/
 │   ├── idear泡泡.html   # 网页端，也是各端共用的核心（单文件，零依赖）
 │   └── build.sh         # 网页端构建：检查脚本语法，输出 web/dist/index.html
+├── android/             # Android 端：Gradle 工程，WebView 外壳（Java，无第三方库）
+│   └── app/src/main/java/com/idear/bubble/MainActivity.java
 ├── analysis.md          # 需求视频的逐帧分析
 └── README.md
 ```
@@ -50,3 +52,34 @@ python3 -m http.server 8765 --directory web/dist
 ```
 
 然后访问 http://localhost:8765/ 。注意：`file://` 和 `http://localhost` 在浏览器里是不同的来源，各自保存各自的数据。
+
+## Android 端
+
+一个原生 WebView 外壳：构建时把 `web/idear泡泡.html` 打包进 APK，并补上导出备份（系统「保存到」界面）、从备份恢复（系统文件选择器）和确认框。
+
+需要：
+
+- JDK 17 或更高版本
+- Android SDK，含 `platforms;android-36`；用环境变量 `ANDROID_HOME` 指向 SDK 目录，或在 `android/local.properties` 里写 `sdk.dir=/你的/sdk/路径`
+- 首次构建会通过 Gradle Wrapper 自动下载 Gradle 9.9.1 和 Android Gradle Plugin 9.5.1，需要联网
+
+**构建调试版 APK**：
+
+```bash
+cd android
+./gradlew assembleDebug
+```
+
+产物在 `android/app/build/outputs/apk/debug/app-debug.apk`（约 60 KB），最低支持 Android 7.0（API 24），需要系统 WebView 87 及以上。
+
+**安装到已连接的设备或模拟器并启动**：
+
+```bash
+adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+```
+
+```bash
+adb shell am start -n com.idear.bubble/.MainActivity
+```
+
+也可以用 Android Studio 打开 `android/` 目录直接运行。正式发布需要自行配置签名，仓库里不包含任何签名密钥。

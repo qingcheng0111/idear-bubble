@@ -21,23 +21,32 @@
 ```
 .
 ├── web/
-│   └── idear泡泡.html   # 网页端，也是各端共用的核心（单文件，零依赖）
+│   ├── idear泡泡.html   # 网页端，也是各端共用的核心（单文件，零依赖）
+│   └── build.sh         # 网页端构建：检查脚本语法，输出 web/dist/index.html
 ├── analysis.md          # 需求视频的逐帧分析
 └── README.md
 ```
 
 ## 网页端
 
-不需要构建，任何现代浏览器直接打开即可：
+需要：任意现代浏览器；构建时需要 Node.js（只用来检查脚本语法）。
+
+**直接运行**：源文件就是成品，双击或用命令打开：
 
 ```bash
 open 'web/idear泡泡.html'
 ```
 
-也可以用本地服务器打开：
+**构建**（输出可部署到任意静态托管的 `web/dist/index.html`）：
 
 ```bash
-python3 -m http.server 8765 --directory web
+./web/build.sh
 ```
 
-然后访问 http://localhost:8765/idear泡泡.html 。注意：不同的打开方式（`file://` 和 `http://localhost`）在浏览器里是不同的来源，各自保存各自的数据。
+**本地预览构建结果**：
+
+```bash
+python3 -m http.server 8765 --directory web/dist
+```
+
+然后访问 http://localhost:8765/ 。注意：`file://` 和 `http://localhost` 在浏览器里是不同的来源，各自保存各自的数据。

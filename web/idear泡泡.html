@@ -1049,18 +1049,30 @@
     savePositions();
     return JSON.stringify({ app: APP_ID, version: APP_VERSION, exportedAt: new Date().toISOString(), bubbles: state.bubbles }, null, 2);
   }
-  $('#exportBtn').addEventListener('click', () => {
-    closeMenus();
-    const blob = new Blob([backupJSON()], { type: 'application/json' });
-    const d = new Date();
-    const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+  // 保存文本文件：Android / Mac 客户端由原生外壳弹出保存对话框，浏览器里走普通下载
+  function saveTextFile(name, text) {
+    if (window.IdearNative && typeof window.IdearNative.saveTextFile === 'function') {
+      window.IdearNative.saveTextFile(name, text);   // Android 端注入的接口
+      return;
+    }
+    const mac = window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.saveTextFile;
+    if (mac) {
+      mac.postMessage({ name, text });               // Mac 端注入的接口
+      return;
+    }
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `idear泡泡备份-${stamp}.json`;
+    a.href = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+    a.download = name;
     document.body.appendChild(a);
     a.click();
     a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  }
+  $('#exportBtn').addEventListener('click', () => {
+    closeMenus();
+    const d = new Date();
+    const stamp = `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+    saveTextFile(`idear泡泡备份-${stamp}.json`, backupJSON());
   });
   $('#importBtn').addEventListener('click', () => { closeMenus(); importFile.value = ''; importFile.click(); });
   function restoreFrom(text) {

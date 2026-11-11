@@ -1,0 +1,26 @@
+# 视频抽帧：本地保留，不提交
+frames/
+
+# 本地工具配置与缓存
+.claude/
+.impeccable/
+.DS_Store
+
+# 网页端构建产物
+web/dist/
+
+# Android 构建产物与本机配置
+android/.gradle/
+android/.kotlin/
+android/.idea/
+android/build/
+android/app/build/
+android/local.properties
+*.apk
+*.aab
+*.jks
+*.keystore
+
+# macOS 构建产物
+macos/.build/
+macos/build/

@@ -4,6 +4,22 @@
 
 数据只保存在当前设备本地，没有服务器和账号。换设备时，用「备份 ⇅」导出 `.json`，再到另一台设备上恢复。
 
+## 下载安装
+
+到 [Releases](https://github.com/qingcheng0111/idear-bubble/releases/latest) 下载对应的安装包：
+
+| 平台 | 文件 | 安装 |
+|---|---|---|
+| Android 7.0 及以上 | `idear-bubble-1.0-android.apk` | 在手机上打开 APK，按提示允许「安装未知来源应用」 |
+| macOS 13 及以上（Apple 芯片 / Intel） | `idear-bubble-1.0-macos.dmg` | 打开 dmg，把「idear泡泡」拖进「应用程序」 |
+| 浏览器 | `idear-bubble-1.0-web.html` | 下载后双击，用浏览器打开 |
+
+Mac 版没有经过 Apple 公证，第一次打开会被系统拦下。先双击打开一次，然后到「系统设置 → 隐私与安全性」，点「仍要打开」。也可以在终端执行：
+
+```bash
+xattr -dr com.apple.quarantine '/Applications/idear泡泡.app'
+```
+
 ## 功能
 
 - 新建泡泡，编辑名字、内容、颜色、大小方式、所在位置
@@ -28,7 +44,7 @@
 ├── macos/               # Mac 端：Swift Package，AppKit + WKWebView 外壳（无第三方库）
 │   ├── Sources/IdearBubble/
 │   ├── Info.plist
-│   └── build.sh         # 编译并组装 macos/build/idear泡泡.app
+│   └── build.sh         # 编译通用版，组装 idear泡泡.app 并打包 .dmg
 ├── analysis.md          # 需求视频的逐帧分析
 └── README.md
 ```
@@ -89,7 +105,17 @@ adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 adb shell am start -n com.idear.bubble/.MainActivity
 ```
 
-也可以用 Android Studio 打开 `android/` 目录直接运行。正式发布需要自行配置签名，仓库里不包含任何签名密钥。
+也可以用 Android Studio 打开 `android/` 目录直接运行。
+
+**构建签名的正式版**：仓库里不保存签名文件和密码，构建时通过环境变量传入。`IDEAR_KEY_ALIAS` 可省略，默认是 `idear-bubble`；不设置这些变量时，产出的是未签名的正式包。下面的示例里，签名文件放在 `~/.android/`，密码存在 macOS 钥匙串的 `idear-bubble-release` 条目中：
+
+```bash
+IDEAR_KEYSTORE="$HOME/.android/idear-bubble-release.jks" \
+IDEAR_KEYSTORE_PASSWORD="$(security find-generic-password -s idear-bubble-release -w)" \
+./android/gradlew -p android assembleRelease
+```
+
+产物在 `android/app/build/outputs/apk/release/app-release.apk`。之后发布的每个版本都必须用同一个签名文件，用户才能直接覆盖升级，请妥善备份它。
 
 ## Mac 端
 
@@ -97,7 +123,7 @@ adb shell am start -n com.idear.bubble/.MainActivity
 
 需要：macOS 13 或更高版本，Xcode 或 Command Line Tools（Swift 6）。
 
-**构建**（输出 `macos/build/idear泡泡.app`，使用本机临时签名）：
+**构建**（Apple 芯片 + Intel 通用版，使用本机临时签名；同时输出应用 `macos/build/idear泡泡.app` 和安装镜像 `macos/build/idear-bubble-1.0-macos.dmg`）：
 
 ```bash
 ./macos/build.sh

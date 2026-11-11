@@ -35,6 +35,25 @@ android {
         versionName = "1.0"
     }
 
+    // 正式版签名只从环境变量读取，仓库里不保存签名文件和密码；没有设置时产出未签名的正式包
+    val releaseKeystore = providers.environmentVariable("IDEAR_KEYSTORE").orNull
+    signingConfigs {
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = providers.environmentVariable("IDEAR_KEYSTORE_PASSWORD").orNull
+                keyAlias = providers.environmentVariable("IDEAR_KEY_ALIAS").orNull ?: "idear-bubble"
+                keyPassword = storePassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig = signingConfigs.findByName("release")
+        }
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

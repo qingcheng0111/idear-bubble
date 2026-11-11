@@ -25,6 +25,10 @@
 │   └── build.sh         # 网页端构建：检查脚本语法，输出 web/dist/index.html
 ├── android/             # Android 端：Gradle 工程，WebView 外壳（Java，无第三方库）
 │   └── app/src/main/java/com/idear/bubble/MainActivity.java
+├── macos/               # Mac 端：Swift Package，AppKit + WKWebView 外壳（无第三方库）
+│   ├── Sources/IdearBubble/
+│   ├── Info.plist
+│   └── build.sh         # 编译并组装 macos/build/idear泡泡.app
 ├── analysis.md          # 需求视频的逐帧分析
 └── README.md
 ```
@@ -83,3 +87,23 @@ adb shell am start -n com.idear.bubble/.MainActivity
 ```
 
 也可以用 Android Studio 打开 `android/` 目录直接运行。正式发布需要自行配置签名，仓库里不包含任何签名密钥。
+
+## Mac 端
+
+一个原生 AppKit 窗口，里面的 WKWebView 加载 `web/idear泡泡.html`，并补上提示与确认框、导出备份（系统保存面板）、从备份恢复（系统打开面板），以及「编辑」菜单（⌘C / ⌘V / ⌘Z 等）。
+
+需要：macOS 13 或更高版本，Xcode 或 Command Line Tools（Swift 6）。
+
+**构建**（输出 `macos/build/idear泡泡.app`，使用本机临时签名）：
+
+```bash
+./macos/build.sh
+```
+
+**运行**：
+
+```bash
+open 'macos/build/idear泡泡.app'
+```
+
+数据保存在 `~/Library/WebKit/com.idear.bubble/`。要分发给其他电脑，需要换成自己的 Apple 开发者证书签名并公证。

@@ -4,7 +4,7 @@
 
 | 项目 | 值 |
 |---|---|
-| 源视频 | `/Users/gqc/Downloads/bubblebrain🫧 嘿嘿好玩 [7706484521566731237].mp4`（只读，未修改） |
+| 源视频 | `~/Downloads/bubblebrain🫧 嘿嘿好玩 [7706484521566731237].mp4`（只读，未修改） |
 | 分辨率 / 原始帧率 | 720×1280，30 fps（视频流 1293 帧） |
 | 时长 | 43.1 s（`ffprobe` 的 `format=duration`） |
 | 抽帧命令 | `ffmpeg -i '<视频>' -vf fps=10 -q:v 3 frames/frame_%04d.jpg` |

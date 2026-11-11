@@ -33,6 +33,10 @@
 └── README.md
 ```
 
+三端共用同一份网页核心 `web/idear泡泡.html`：改功能只改这一个文件，再按下面的命令重新构建各端即可。Android 和 Mac 外壳只负责加载它，并补上网页在内嵌浏览器里缺少的原生能力。
+
+下面的命令都在仓库根目录执行。
+
 ## 网页端
 
 需要：任意现代浏览器；构建时需要 Node.js（只用来检查脚本语法）。
@@ -70,8 +74,7 @@ python3 -m http.server 8765 --directory web/dist
 **构建调试版 APK**：
 
 ```bash
-cd android
-./gradlew assembleDebug
+./android/gradlew -p android assembleDebug
 ```
 
 产物在 `android/app/build/outputs/apk/debug/app-debug.apk`（约 60 KB），最低支持 Android 7.0（API 24），需要系统 WebView 87 及以上。

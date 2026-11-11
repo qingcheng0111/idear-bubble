@@ -53,6 +53,8 @@ xattr -dr com.apple.quarantine '/Applications/idear泡泡.app'
 │   ├── main.go
 │   └── build.sh         # 交叉编译 x64 / ARM64 两个单文件 exe
 ├── analysis.md          # 需求视频的逐帧分析
+├── LICENSE.md           # 许可证：PolyForm Noncommercial 1.0.0（禁止商用）
+├── THIRD_PARTY_NOTICES.md  # Windows 版所用第三方组件的许可证
 └── README.md
 ```
 
@@ -157,3 +159,16 @@ open 'macos/build/idear泡泡.app'
 ```
 
 **运行**：把 exe 拷到 Windows 10 / 11 上双击。网页文件和数据保存在 `%LOCALAPPDATA%\idear-bubble\`。
+
+## 许可证
+
+本项目按 [PolyForm Noncommercial License 1.0.0](LICENSE.md) 授权，**禁止商业用途**。
+
+- **允许**：个人出于学习、研究、试验、爱好或私人用途使用；慈善组织、教育机构、公共研究机构、政府机构等非营利性机构使用；在同样条款下修改和分发。
+- **不允许**：以营利为目的的使用，例如企业经营中使用、出售本软件，或把它作为收费产品、收费服务的一部分。
+- **分发时**：必须附上许可证全文（或它的网址），以及 `LICENSE.md` 开头那行 `Required Notice` 版权声明。
+- **商业授权**：如需商业使用，请先通过 GitHub 联系作者取得单独授权。
+
+以上中文只是摘要，具体以 [LICENSE.md](LICENSE.md) 中的英文原文为准。
+
+Windows 版编译进了几个第三方组件，它们仍遵循各自的许可证（MIT、ISC、BSD-3-Clause），不受上述非商业限制，详见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
